@@ -29,7 +29,7 @@ def get_info():
 
     # Construct GitHub URLs
     github_file_url = "https://github.com/Chris-ade/hngx/blob/main/stage_one/app.py"
-    github_repo_url = "https://github.com/chris-ade/hngx/stage_one/"
+    github_repo_url = "https://github.com/chris-ade/hngx"
 
     # Prepare the response JSON
     response_data = {
