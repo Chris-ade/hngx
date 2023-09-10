@@ -124,7 +124,7 @@ def update_person():
     try:
         # Loads the request body
         data = request.get_json()
-        person_id = data['id']
+        person_id = int(data['id'])
         age = int(data['age'])
 
         # Input validation
@@ -161,7 +161,7 @@ def delete_person():
     try:
         # Loads the request body
         data = request.get_json()
-        person_id = data['id']
+        person_id = int(data['id'])
         
         # Input validation
         if not isinstance(person_id, int):
