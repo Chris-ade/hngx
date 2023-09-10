@@ -28,7 +28,7 @@ def get_info():
     current_time = datetime.datetime.utcnow().strftime('%Y-%m-%dT%H:%M:%SZ')
 
     # Construct GitHub URLs
-    github_file_url = "https://github.com/chris-ade/hngx/stage_one/blob/main/app.py"
+    github_file_url = "https://github.com/Chris-ade/hngx/blob/main/stage_one/app.py"
     github_repo_url = "https://github.com/chris-ade/hngx/stage_one/"
 
     # Prepare the response JSON
