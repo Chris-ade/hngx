@@ -87,3 +87,28 @@ The base URL for all API endpoints is `https://hackinubee.pythonanywhere.com/api
 - **200:** OK (Person deleted successfully)
 - **404:** Not Found (Person not found or does not exist)
 - **400:** Bad Request (in case of errors)
+
+**Sample Usage**
+- Create a Person
+``` bash
+curl -X POST -H "Content-Type: application/json" -d '{
+  "name": "John Doe",
+  "age": 30,
+  "email": "johndoe@hngx.com",
+  "gender": "male"
+}' https://hackinubee.pythonanywhere.com/api
+```
+**Get a Person by ID**
+``` bash
+curl https://hackinubee.pythonanywhere.com/api/2
+```
+**Update a Person by ID**
+``` bash
+curl -X PUT -H "Content-Type: application/json" -d '{
+  "age": 21
+}' https://hackinubee.pythonanywhere.com/api/1
+```
+**Delete a Person by ID**
+``` bash
+curl -X DELETE https://hackinubee.pythonanywhere.com/api/2
+```
