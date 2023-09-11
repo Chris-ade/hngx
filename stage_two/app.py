@@ -15,8 +15,8 @@ class Person(db.Model):
     ''' This is a model that initialize a table titled `person` with columns id, name, email, gender and age.
     '''
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.String(255), nullable=False)
-    email = db.Column(db.String(255), nullable=False)
+    name = db.Column(db.String(255), nullable=False, unique=True)
+    email = db.Column(db.String(255), nullable=False, unique=True)
     gender = db.Column(db.String(6), nullable=False)
     age = db.Column(db.Integer, nullable=False)
     
@@ -53,42 +53,43 @@ def create_person():
         # Input validation
         if not isinstance(name, str) or not isinstance(age, int) or not isinstance(email, str) or not isinstance(age, int):
             return jsonify({'error': 'Invalid input data'}), 400
+        
+        person = Person.query.filter_by(name=name, email=email).first()
 
-        person = Person(name=name, email=email, gender=gender, age=age)
-        db.session.add(person)
-        db.session.commit()
+        if person:
+            return jsonify({'message': 'A person with this name and email address already exists'}), 400
+        else:
+            person = Person(name=name, email=email, gender=gender, age=age)
+            db.session.add(person)
+            db.session.commit()
 
-        # Returns a message in Json
-        return jsonify({'message': 'Person created successfully'}), 201
+            # Returns a message in Json
+            return jsonify({'message': 'Person created successfully', 'id': person.id}), 201
     
     # Handles empty or invalid keys
     except (KeyError, ValueError):
         db.session.rollback()
         return jsonify({'error': "Invalid request"}), 400
 
-@app.route('/api', methods=['GET'])
-def get_person():
+@app.route('/api/<int:user_id>', methods=['GET'])
+def get_person(user_id):
     ''' This endpoint takes a GET request to fetch a specific person in the database.
     
     Parameters:
-        name (str): A key passed as a JSON payload of the GET request which value indicates the person's name and data to fetch.
+        user_id (int): A parameter passed in the URL which value indicates the person's ID and data to fetch.
 
     Returns:
         JSON: A json response returns a message indicating if the task was successful or an error message.
 
     Example:
-        GET /api/ {'name': 'Chris'}
+        GET /api/<user_id>
     '''
     try:
-        # Loads the request body
-        data = request.get_json()
-        name = data['name']
-        
         # Input validation
-        if not isinstance(name, str):
+        if not isinstance(user_id, int):
             return jsonify({'error': 'Invalid input data'}), 400
             
-        person = Person.query.filter_by(name=name).first()
+        person = Person.query.filter_by(id=user_id).first()
 
         if person:
             person_data = {
@@ -106,12 +107,12 @@ def get_person():
     except (KeyError, ValueError):
         return jsonify({'error': "Invalid request"}), 400
 
-@app.route('/api', methods=['PUT'])
-def update_person():
+@app.route('/api/<int:user_id>', methods=['PUT'])
+def update_person(user_id):
     ''' This endpoint takes a PUT request to update a specific person gender in the database.
     
     Parameters:
-        id (int): A key passed as a JSON payload of the PUT request which value indicates the ID of the person to update.
+        user_id (int): A parameter passed in the URL which value indicates the ID of the person to update.
         
         age (int): A key passed as a JSON payload of the PUT request which value indicates the new value for the person's age.
         
@@ -119,24 +120,30 @@ def update_person():
         JSON: A json response returns a message indicating if the task was successful or an error message.
 
     Example:
-        PUT /api/ {'id': 1, 'age': 21}
+        PUT /api/<user_id> {'age': 21}
     '''
     try:
         # Loads the request body
         data = request.get_json()
-        person_id = int(data['id'])
         age = int(data['age'])
 
         # Input validation
-        if not isinstance(person_id, int) or not isinstance(age, int):
+        if not isinstance(user_id, int) or not isinstance(age, int):
             return jsonify({'error': 'Invalid input data'}), 400
 
-        person = Person.query.filter_by(id=person_id).first()
+        person = Person.query.filter_by(id=user_id).first()
         if person:
             person.age = age
             db.session.commit()
+            person_data = {
+                'id': person.id,
+                'name': person.name,
+                'email': person.email,
+                'gender': person.gender,
+                'age': person.age
+            }
             # Returns success message
-            return jsonify({'message': 'Person updated successfully'}), 200
+            return jsonify({'message': 'Person updated successfully', 'person': person_data}), 200
         else:
             return jsonify({'message': 'Person not found or does not exist'}), 404
 
@@ -145,29 +152,25 @@ def update_person():
         db.session.rollback()
         return jsonify({'error': "Invalid request"}), 400
 
-@app.route('/api', methods=['DELETE'])
-def delete_person():
+@app.route('/api/<int:user_id>', methods=['DELETE'])
+def delete_person(user_id):
     ''' This endpoint takes a DELETE request to delete a specific person in the database.
     
     Parameters:
-        id (int): A key passed as a JSON payload of the DELETE request which value indicates the ID of the person to delete from the database.
+        user_id (int): A parameter passed in the URL which value indicates the ID of the person to delete.
 
     Returns:
         JSON: A json response returns a message indicating if the task was successful or an error message.
 
     Example:
-        DELETE /api/ {'id': 1}
+        DELETE /api/<user_id>
     '''
     try:
-        # Loads the request body
-        data = request.get_json()
-        person_id = int(data['id'])
-        
         # Input validation
-        if not isinstance(person_id, int):
+        if not isinstance(user_id, int):
             return jsonify({'error': 'Invalid input data'}), 400
         
-        person = Person.query.filter_by(id=person_id).first()
+        person = Person.query.filter_by(id=user_id).first()
         if person:
             db.session.delete(person)
             db.session.commit()
