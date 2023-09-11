@@ -33,7 +33,7 @@ The base URL for all API endpoints is `https://hackinubee.pythonanywhere.com/api
 
 ### 2. Get a Person by ID (GET)
 - Retrieve details of a person by specifying their ID.
-- **URL:** /api/<<int:user_id>>
+- **URL:** `/api/<int:user_id>`
 - **Method:** GET
 - **Response Format:**
 ``` json
@@ -49,5 +49,41 @@ The base URL for all API endpoints is `https://hackinubee.pythonanywhere.com/api
 ```
 - **Status Codes:**
 - **200:** OK (Person found)
+- **404:** Not Found (Person not found or does not exist)
+- **400:** Bad Request (in case of errors)
+
+### 3. Update a Person by ID (PUT)
+- Modify details of an existing person by specifying their ID.
+- **URL:** `/api/<int:user_id>`
+- **Method:** PUT
+- **Request Format:**
+``` json
+{
+  "age": 21
+}
+```
+- **Response Format:**
+``` json
+{
+  "message": "Person updated successfully"
+}
+```
+- **Status Codes:**
+- **200:** OK (Person updated successfully)
+- **404:** Not Found (Person not found or does not exist)
+- **400:** Bad Request (in case of errors)
+
+### 4. Delete a Person by ID (DELETE)
+- Remove a person from the database by specifying their ID.
+- **URL:** `/api/<int:user_id>`
+- **Method:** DELETE
+- **Response Format:**
+``` json
+{
+  "message": "Person deleted successfully"
+}
+```
+- **Status Codes:**
+- **200:** OK (Person deleted successfully)
 - **404:** Not Found (Person not found or does not exist)
 - **400:** Bad Request (in case of errors)
