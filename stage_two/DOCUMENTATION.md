@@ -106,7 +106,7 @@ curl https://hackinubee.pythonanywhere.com/api/2
 ``` bash
 curl -X PUT -H "Content-Type: application/json" -d '{
   "age": 21
-}' https://hackinubee.pythonanywhere.com/api/1
+}' https://hackinubee.pythonanywhere.com/api/2
 ```
 **Delete a Person by ID**
 ``` bash
