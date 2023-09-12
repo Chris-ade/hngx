@@ -2,7 +2,7 @@ import requests
 import json
 
 # contains the base url of the app
-base_url = 'http://localhost:5000/api'
+base_url = 'https://hackinubee.pythonanywhere.com/api'
 user_data = {}
 
 # Function to print the response and status code
