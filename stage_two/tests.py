@@ -2,7 +2,7 @@ import requests
 import json
 
 # contains the base url of the app
-base_url = 'https://hackinubee.pythonanywhere.com/api'
+base_url = 'http://localhost:5000/api'
 user_data = {}
 
 # Function to print the response and status code
@@ -14,7 +14,10 @@ def print_response(response):
 # Test the CREATE endpoint
 def test_create_person():
     data = {
-        "name": "John Doe",
+        'name': 'John Doe',
+        'age': 30,
+        'email': 'johndoe@example.com',
+        'gender': 'male'
     }
     response = requests.post(base_url, json=data)
     response_data = response.json()
@@ -33,7 +36,7 @@ def test_get_person(user_id):
 # Test the UPDATE endpoint
 def test_update_person(user_id):
     data = {
-        "name": "John Smith",
+        'age': 21,
     }
     response = requests.put(f'{base_url}/{user_id}', json=data)
     print(f'Testing UPDATE endpoint for person ID: {user_id}')
