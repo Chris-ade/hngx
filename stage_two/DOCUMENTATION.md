@@ -65,7 +65,14 @@ The base URL for all API endpoints is `https://hackinubee.pythonanywhere.com/api
 - **Response Format:**
 ``` json
 {
-  "message": "Person updated successfully"
+  "message": "Person updated successfully",
+  "person": {
+    "id": 1,
+    "name": "John Doe",
+    "age": 21,
+    "email": "johndoe@hngx.com",
+    "gender": "male"
+  }
 }
 ```
 - **Status Codes:**
