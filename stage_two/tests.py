@@ -14,10 +14,7 @@ def print_response(response):
 # Test the CREATE endpoint
 def test_create_person():
     data = {
-        'name': 'John Doe',
-        'age': 30,
-        'email': 'johndoe@example.com',
-        'gender': 'male'
+        "name": "John Doe",
     }
     response = requests.post(base_url, json=data)
     response_data = response.json()
@@ -36,7 +33,7 @@ def test_get_person(user_id):
 # Test the UPDATE endpoint
 def test_update_person(user_id):
     data = {
-        'age': 21,
+        "name": "John Smith",
     }
     response = requests.put(f'{base_url}/{user_id}', json=data)
     print(f'Testing UPDATE endpoint for person ID: {user_id}')
